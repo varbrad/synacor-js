@@ -1,0 +1,23 @@
+{
+  "name": "synacor-js",
+  "version": "1.0.0",
+  "description": "Synacor virtual machine written in JavaScript",
+  "bin": {
+    "synacor-js": "./bin/synacor.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/varbrad/synacor-js.git"
+  },
+  "keywords": [
+    "synacor",
+    "virtual",
+    "machine"
+  ],
+  "author": "Brad Davies <varbrad@users.noreply.github.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/varbrad/synacor-js/issues"
+  },
+  "homepage": "https://github.com/varbrad/synacor-js#readme"
+}
