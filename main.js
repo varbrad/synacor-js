@@ -98,6 +98,30 @@ function run(program, args, writeStream, log) {
         registers.write(a, (b + c) % (MAX_VALUE + 1))
         i += 3
         break
+      case 0x0c: // AND a = a AND b
+        a = getRegister(getProgramValue(program, i + 1))
+        b = getValue(getProgramValue(program, i + 2), registers)
+        c = getValue(getProgramValue(program, i + 3), registers)
+        registers.write(a, b & c)
+        i += 3
+        break
+      case 0x0d: // OR
+        a = getRegister(getProgramValue(program, i + 1))
+        b = getValue(getProgramValue(program, i + 2), registers)
+        c = getValue(getProgramValue(program, i + 3), registers)
+        registers.write(a, b | c)
+        i += 3
+        break
+      case 0x0e: // NOT
+        a = getRegister(getProgramValue(program, i + 1))
+        b = getValue(getProgramValue(program, i + 2), registers)
+        registers.write(a, b ^ MAX_VALUE)
+        i += 2
+        break
+      case 0x11: // CALL write next ins to stack, and jump to a
+        a = getValue(getProgramValue(program, i + 2), registers)
+        i = a - 1
+        break
       case 0x13: // OUT
         a = getValue(getProgramValue(program, i + 1), registers)
         writeStream.write(String.fromCharCode(a))
