@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Synacor virtual machine written in JavaScript",
   "bin": {
-    "synacor-js": "./bin/synacor.js"
+    "synacor": "./bin/synacor.js"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/varbrad/synacor-js/issues"
   },
-  "homepage": "https://github.com/varbrad/synacor-js#readme"
+  "homepage": "https://github.com/varbrad/synacor-js#readme",
+  "dependencies": {
+    "bytes": "^3.0.0",
+    "chalk": "^2.3.0"
+  }
 }
