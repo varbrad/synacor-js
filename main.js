@@ -27,6 +27,7 @@ function getProgramValue(program, i) {
  */
 function run(program, args, writeStream, log) {
   let registers = new Registers()
+  let stack = []
   let i = 0
   let halt = false
 
@@ -43,6 +44,30 @@ function run(program, args, writeStream, log) {
         b = getValue(getProgramValue(program, i + 2), registers)
         registers.write(a, b)
         i += 2
+        break
+      case 0x02: // PUSH a on to the stack
+        a = getValue(getProgramValue(program, i + 1), registers)
+        stack.push(a)
+        i += 1
+        break
+      case 0x03: // POP stack and set to a
+        a = getRegister(getProgramValue(program, i + 1))
+        registers.write(a, stack.pop())
+        i += 1
+        break
+      case 0x04: // eq -> set a to 1 if b = c
+        a = getRegister(getProgramValue(program, i + 1))
+        b = getValue(getProgramValue(program, i + 2), registers)
+        c = getValue(getProgramValue(program, i + 3), registers)
+        registers.write(a, b === c ? 1 : 0)
+        i += 3
+        break
+      case 0x05: // gt set a to 1 if b > c
+        a = getRegister(getProgramValue(program, i + 1))
+        b = getValue(getProgramValue(program, i + 2), registers)
+        c = getValue(getProgramValue(program, i + 3), registers)
+        registers.write(a, b > c ? 1 : 0)
+        i += 3
         break
       case 0x06: // JMP
         a = getValue(getProgramValue(program, i + 1), registers)
@@ -75,7 +100,7 @@ function run(program, args, writeStream, log) {
         break
       case 0x13: // OUT
         a = getValue(getProgramValue(program, i + 1), registers)
-        // writeStream.write(String.fromCharCode(a))
+        writeStream.write(String.fromCharCode(a))
         i++
         break
       case 0x15: // NOOP
