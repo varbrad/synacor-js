@@ -9,8 +9,16 @@ class Memory {
     return this.buffer.readUInt16LE(index * 2)
   }
 
+  set(index: number, v: number) {
+    this.buffer.writeUInt16LE(v, index * 2)
+  }
+
   length(): number {
     return this.buffer.length * 0.5
+  }
+
+  slice(start: number, length: number): Buffer {
+    return this.buffer.slice(start * 2, start * 2 + length * 2)
   }
 
   static fromArray(array: number[]): Memory {

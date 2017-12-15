@@ -6,7 +6,7 @@ class Registers {
   }
 
   set(r: number, v: number) {
-    this.buffer.writeUInt16LE(this.get(v), this.index(r))
+    this.buffer.writeUInt16LE(this.get(v), this.index(r) * 2)
   }
 
   get(v: number) {
