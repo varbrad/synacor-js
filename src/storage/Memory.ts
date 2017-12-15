@@ -5,6 +5,14 @@ class Memory {
     this.buffer = buffer
   }
 
+  get(index: number): number {
+    return this.buffer.readUInt16LE(index * 2)
+  }
+
+  length(): number {
+    return this.buffer.length * 0.5
+  }
+
   static fromArray(array: number[]): Memory {
     // Create the buffer from this array of length * 2 (8-bit to 16-bit)
     const buffer: Buffer = Buffer.allocUnsafe(array.length * 2)
