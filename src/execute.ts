@@ -1,4 +1,4 @@
-import { Writable } from 'stream'
+import { Writable, Readable } from 'stream'
 
 import Memory from './storage/Memory'
 import Registers from './storage/Registers'
@@ -12,7 +12,11 @@ import { Opcode, Opargs, getOpcodeLabel, getOpcodeArgs } from './ops'
  * @param memory A memory object to run
  * @param writeStream A Writeable object to stream output to
  */
-export function execute(memory: Memory, writeStream: Writable): number {
+export function execute(
+  memory: Memory,
+  writeStream: Writable,
+  readStream: Readable
+): number {
   const registers = new Registers()
   const stack = []
 
@@ -20,6 +24,7 @@ export function execute(memory: Memory, writeStream: Writable): number {
 
   let i = 0
   let lastI = -1
+
   loop: while (i < memLen) {
     const opcode = memory.get(i)
     switch (opcode) {
@@ -165,6 +170,8 @@ export function execute(memory: Memory, writeStream: Writable): number {
           'utf-8'
         )
         i += Opargs.out + 1
+        break
+      case Opcode.in:
         break
       case Opcode.noop:
         // 21 -> no operation
