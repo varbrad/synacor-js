@@ -1,16 +1,37 @@
-const Memory = require('./storage/Memory')
+import Memory from './storage/Memory'
 
-const memory = Memory.fromArray([9, 32768, 32769, 4, 19, 32768])
+import { Opcode, Oplabel, Opargs, getOpcodeLabel, getOpcodeArgs } from './ops'
 
-/**
- * @param {Memory} memory Synacor program memory
- */
-function decompile(memory) {
+function getValueLabel(v: number): string {
+  if (v <= 32767) return String(v)
+  if (v <= 32775) return 'abcdefgh'[v - 32768]
+  throw new Error(`Invalid value in binary "${v}"`)
+}
+
+export function decompile(memory: Memory) {
+  // A list of the instructions
   const instructions = []
-  // Keep looping
-  let done = false
-  while (!done) {
-    break
+  let i: number = 0
+  let memoryLength: number = memory.length()
+  // Loop until we are done
+  while (i < memoryLength) {
+    // Get this memory instruction opcode
+    const opcode: Opcode = memory.get(i)
+    const label: Oplabel = getOpcodeLabel(opcode)
+    const args: Opargs = getOpcodeArgs(opcode)
+
+    let line: string = label
+    let argsArray: (number | string)[] = []
+    for (let k = 0; k < args; ++k)
+      argsArray.push(getValueLabel(memory.get(i + k + 1)))
+
+    line += ' ' + argsArray.join(' ')
+
+    // Write the label to the instruction
+    instructions.push(line)
+
+    i += args + 1 // Arguments plus the opcode itself
   }
-  return 123
+  // Return the instructions
+  return instructions.join('\n')
 }
